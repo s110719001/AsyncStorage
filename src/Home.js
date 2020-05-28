@@ -1,8 +1,33 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, AsyncStorage, TextInput } from 'react-native';
+import {Button} from 'react-native-elements';
 import SegmentControl from './Segmented';
+const COUNTER_KEY = "COUNTER_KEY";
 
 const Home = () => {
+    const [value, onChangeText] = React.useState('');
+    
+    const saveFn = () => {
+        onChangeText(value);
+        try{
+          AsyncStorage.setItem(COUNTER_KEY, JSON.stringify(value));
+        } catch (error) {
+      
+        }
+      };
+
+      React.useEffect(() => {
+        const restoreTextState = async () => {
+          try{
+            const savedStateString = await AsyncStorage.getItem(COUNTER_KEY);
+            const state = JSON.parse(savedStateString);
+            onChangeText(state);
+          }catch(e){
+      
+          }
+        };
+        restoreTextState();
+      }, []);
     return(
         <View style={styles.container}>
             <View style={{alignItems: 'center',}}>
@@ -37,10 +62,19 @@ const Home = () => {
                     <View style={{width:348,height:31,marginTop:-88,alignSelf:'center',backgroundColor:'#EFEACC',borderRadius:7,borderColor:'#EFEACC',borderEndWidth:1.5,borderStartWidth:1.5}}>
                         <SegmentControl/>
                     </View>
-
+                    
                 <View style={{width:1,height:16,backgroundColor:'#8E8E93',position:'absolute',left:263,top:128,opacity:0.5}}></View>
                 <View style={{width:1,height:16,backgroundColor:'#8E8E93',position:'absolute',left:149,top:128,opacity:0.5}}></View>
-               
+                <View style={{flexDirection:'row',marginTop:123,marginLeft:76}}>
+                <TextInput
+                        style={{ width:254,height: 25, borderColor: 'gray', borderWidth: 1 }}
+                        onChangeText={text => onChangeText(text)}
+                        value={value}
+                    />
+                    <View style={{marginLeft:3}}>
+                        <Button onPress={saveFn} title="save" backgroundColor="green" color="green"/>
+                    </View>
+                </View>
             </View>
             
         </View>
