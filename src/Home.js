@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, AsyncStorage, TextInput } from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView, AsyncStorage, TextInput, TouchableOpacity } from 'react-native';
 import {Button} from 'react-native-elements';
 import SegmentControl from './Segmented';
 const COUNTER_KEY = "COUNTER_KEY";
+
+
 
 const Home = () => {
     const [value, onChangeText] = React.useState('');
@@ -28,6 +30,22 @@ const Home = () => {
         };
         restoreTextState();
       }, []);
+      
+      const onPress = () =>{
+        return(
+        <View>
+          <TextInput
+                      style={{ width:254,height: 25, borderColor: 'gray', borderWidth: 1 }}
+                      onChangeText={text => onChangeText(text)}
+                      value={value}
+                  />
+                  <View style={{marginLeft:3}}>
+                      <Button onPress={saveFn} title="save" backgroundColor="green" color="green"/>
+                  </View>
+        </View>
+        )
+    };
+
     return(
         <View style={styles.container}>
             <View style={{alignItems: 'center',}}>
@@ -65,16 +83,24 @@ const Home = () => {
                     
                 <View style={{width:1,height:16,backgroundColor:'#8E8E93',position:'absolute',left:263,top:128,opacity:0.5}}></View>
                 <View style={{width:1,height:16,backgroundColor:'#8E8E93',position:'absolute',left:149,top:128,opacity:0.5}}></View>
+                
                 <View style={{flexDirection:'row',marginTop:123,marginLeft:76}}>
+               
                 <TextInput
                         style={{ width:254,height: 25, borderColor: 'gray', borderWidth: 1 }}
                         onChangeText={text => onChangeText(text)}
                         value={value}
                     />
-                    <View style={{marginLeft:3}}>
-                        <Button onPress={saveFn} title="save" backgroundColor="green" color="green"/>
+                    <View style={{marginLeft:7}}>
+                        <TouchableOpacity onPress={saveFn}>
+                            <Image
+                            source={require('../assets/img/edit1.png')}
+                            style={{width:30,height:30}}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
+                
             </View>
             
         </View>
